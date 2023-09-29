@@ -1,21 +1,11 @@
 import { useEffect, useState } from "react"
-import { getAllEmployees } from "../../services/employeeService"
+// import { getAllEmployees } from "../../services/employeeService"
 
-export const Ticket = ({ ticket, name }) => {
+export const Ticket = ({ ticket, employees }) => {
 
-    const [employees, setEmployees] = useState([])
+
     const [assignedEmployee, setAssignedEmployee] = useState({})
 
-
-    useEffect(() => {
-        getAllEmployees().then(employeeArray => {
-
-            setEmployees(employeeArray)
-            console.log(`employees set`)
-
-        })
-
-    }, [])
 
     useEffect(() => {
         const foundEmployee = employees.find(employee => employee.id === ticket.employeeTickets[0]?.employeeId)
@@ -23,12 +13,8 @@ export const Ticket = ({ ticket, name }) => {
 
     }, [employees, ticket])
 
- 
-    
-    //if employees > 0
-    //iterate through employees
-    //look for matching employeeId on employee Ticket Id
-    //assignedEmployee.user.fullName
+
+
 
     return (
         <section className="ticket" >
@@ -47,3 +33,5 @@ export const Ticket = ({ ticket, name }) => {
         </section>
     )
 }
+
+//LEFT OFF 9:11 IN VIDEO
