@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react"
-import { getStaffUsers } from "../services/userService"
+import { getStaffUsers } from "../../services/userService"
 import { User } from "../users/User"
-import "./Employee.css"
+import "./Employees.css"
+import { Link } from "react-router-dom"
 //define function to gen list
 export const EmployeeList = () => {
     //sets up state to hold data
@@ -19,11 +20,13 @@ export const EmployeeList = () => {
     return <div className="employees">
         {staffUsers.map(staffObj => {
             //for each item in data, run User which interpolates the data object info
-            return (<User
+            return (
+                <Link to={`/employees/${staffObj.id}`}>
+                    <User
                 //passing in props for to feed the child component 
                 key={staffObj.id}
                 user={staffObj}
-                />)
+                /></Link>)
                 
         })}
     </div>

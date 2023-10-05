@@ -26,6 +26,7 @@ export const TicketList = () => {
     useEffect(() => {
         if (searchTerm) {
             const ticketSearch = allTickets.filter(ticket => ticket.description.toLowerCase().includes(searchTerm.toLowerCase()))
+            //all matches replace the current filtered tickets
             setFilteredTickets(ticketSearch)
         } else {
             setFilteredTickets(allTickets)

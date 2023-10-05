@@ -3,3 +3,4 @@ export const getAllTickets = async () => {
     return await res.json()
 
 }
+
