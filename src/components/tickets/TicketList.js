@@ -2,25 +2,26 @@ import { useEffect, useState } from "react"
 import { getAllTickets } from "../../services/ticketService"
 import "./Tickets.css"
 import { Ticket } from "./Ticket"
-import { getAllEmployees } from "../../services/employeeService"
 import { TicketFilterBar } from "./TicketFilterBar"
 
-export const TicketList = () => {
+export const TicketList = ({ currentUser }) => {
     const [allTickets, setAllTickets] = useState([]) // returns a state value and a function to update it
-    const [employees, setEmployees] = useState([])
     const [showEmergencyOnly, setShowEmergencyOnly] = useState(false)// returns a state value and a function to update it
     const [filteredTickets, setFilteredTickets] = useState([])
     const [searchTerm, setSearchTerm] = useState("")
     //On initial render, get tickets
-    useEffect(() => {
+
+    const getAndSetTickets = () => {
         getAllTickets().then(ticketArray => {
             setAllTickets(ticketArray)//fills a new array with state of database tickets
             console.log("tickets set")
         })
+    }
+
+    useEffect(() => {
+        getAndSetTickets()
         //MOVED THIS HERE FROM TICKET.JS TO CUT DOWN ON FETCH CALLS.
-        getAllEmployees().then(employeeArray => {
-            setEmployees(employeeArray)
-        })
+
     }, [])
 
     useEffect(() => {
@@ -48,7 +49,7 @@ export const TicketList = () => {
 
     return (<div className="tickets-container">
         <h2>Tickets</h2>
-        <TicketFilterBar 
+        <TicketFilterBar
             setSearchTerm={setSearchTerm}
             setShowEmergencyOnly={setShowEmergencyOnly} />
         <article className="tickets">
@@ -56,9 +57,11 @@ export const TicketList = () => {
                 return (
                     <Ticket
                         ticket={ticketObject}
-                        employees={employees} //EASILY PASS IN FETCHED DATA AS PROPS FOR CHILD MODULE. EASY TO EAT!!!
-                        key={ticketObject.id} />//passes in prop called ticket
-                )
+                        key={ticketObject.id} //passes in prop called ticket
+                        currentUser={currentUser}
+                        getAndSetTickets={getAndSetTickets}
+                        />)
+
             })}
         </article>
     </div>)

@@ -4,17 +4,18 @@ import { useEffect, useState } from "react"
 import { getEmployeeById } from "../../services/employeeService"
 
 export const EmployeeDetails = () => {
- const [employee, setEmployee] = useState({})
-    const {employeeId} = useParams()   
+    const [employee, setEmployee] = useState({})
+    const { employeeId } = useParams()
 
-useEffect(() => {
-    getEmployeeById(employeeId).then(data => {
-        const employeeObj = data[0]
-        setEmployee(employeeObj)
-    })
-},[employeeId])
+    useEffect(() => {
+        getEmployeeById(employeeId).then(data => {
+            const employeeObj = data[0]
+            setEmployee(employeeObj)
+            console.log(employeeObj)
+        })
+    }, [employeeId])
 
-return (
+    return (
         <section className="employee">
             <header className="employee-header">{employee.user?.fullName}</header>
             <div>
@@ -29,11 +30,11 @@ return (
                 <span className="employee-info">Hourly Rate:  </span>
                 {employee.rate}
             </div>
-            {/* LEFT OFF HERE TRYING TO ACCESS NUMBER OF TICKETS. CANT ACCESS LENGTH EVEN THOUGH I CAN CONSOLE LOG THE LENGTH? */}
-            <div>This User has {}}</div>
+            {/* Had to use a ternery here to get it to wait for the id to populate */}
+            <div>This User has {employee.employeeTickets?.length} active Tickets</div>
         </section>
-   
-)
+
+    )
 
 
 

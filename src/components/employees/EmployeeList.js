@@ -16,12 +16,12 @@ export const EmployeeList = () => {
     }, [])
 
 //returns a parent div and maps each item in data
-
+ 
     return <div className="employees">
         {staffUsers.map(staffObj => {
             //for each item in data, run User which interpolates the data object info
             return (
-                <Link to={`/employees/${staffObj.id}`}>
+                <Link key={staffObj.id} to={`/employees/${staffObj.id}`}>
                     <User
                 //passing in props for to feed the child component 
                 key={staffObj.id}
