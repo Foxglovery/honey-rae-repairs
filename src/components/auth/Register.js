@@ -30,6 +30,7 @@ export const Register = (props) => {
   const handleRegister = (e) => {
     e.preventDefault()
     getUserByEmail(customer.email).then((response) => {
+      //checks if email is already in database by looking if the query response find ANY match which will be length > 0
       if (response.length > 0) {
         // Duplicate email. No good.
         window.alert("Account with that email address already exists")
