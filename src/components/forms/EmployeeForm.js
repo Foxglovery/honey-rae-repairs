@@ -7,8 +7,11 @@ export const EmployeeForm = ({currentUser}) => {
     const [employee, setEmployee] = useState({})
     const navigate = useNavigate()
     useEffect(() => {
+        //gets employee logged in
         getEmployeeById(currentUser.id).then(data => {
+            //strips away array layer
             const employeeObj = data[0]
+            //sets state with object
             setEmployee(employeeObj)
         })
     },[currentUser])

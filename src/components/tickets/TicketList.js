@@ -7,10 +7,12 @@ import { TicketFilterBar } from "./TicketFilterBar";
 export const TicketList = ({ currentUser }) => {
   const [allTickets, setAllTickets] = useState([]); // returns a state value and a function to update it
   const [showEmergencyOnly, setShowEmergencyOnly] = useState(false); // returns a state value and a function to update it
+  const [showOpenTickets, setShowOpenTickets] = useState(false)
   const [filteredTickets, setFilteredTickets] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  //added state for opentickets
+  
   //On initial render, get tickets
-
   //this updates our tickets when edited
   const getAndSetTickets = () => {
     getAllTickets().then((ticketArray) => {
@@ -29,8 +31,8 @@ export const TicketList = ({ currentUser }) => {
 
   useEffect(() => {
     getAndSetTickets();
-    //MOVED THIS HERE FROM TICKET.JS TO CUT DOWN ON FETCH CALLS.
-  }, []);
+    //adding currentUser to Dependency array allows customer ticket list to persist upon refresh by updating the state anytime the currentuser changes
+  }, [currentUser]);
 
   useEffect(() => {
     if (searchTerm) {
@@ -59,12 +61,24 @@ export const TicketList = ({ currentUser }) => {
     }
   }, [showEmergencyOnly, allTickets]); //when showEmergencyOnly changes, this useEffect will run
 
+  //user toggles tickets without completion date
+  useEffect(() => {
+    if(showOpenTickets) {
+      const openTickets = allTickets.filter((ticket) => ticket.dateCompleted === "");
+      setFilteredTickets(openTickets)
+    } else {
+      setFilteredTickets(allTickets)
+    }
+  },[showOpenTickets, allTickets])
+
   return (
     <div className="tickets-container">
       <h2>Tickets</h2>
       <TicketFilterBar
         setSearchTerm={setSearchTerm}
         setShowEmergencyOnly={setShowEmergencyOnly}
+        setShowOpenTickets={setShowOpenTickets}
+        currentUser={currentUser}
       />
       <article className="tickets">
         {filteredTickets.map((ticketObject) => {
